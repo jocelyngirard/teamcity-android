@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
+import android.widget.ListView;
 
-import com.smartnsoft.droid4me.app.WrappedSmartListActivity;
+import com.erioxyde.android.teamcity.bo.Project;
+import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices;
+import com.smartnsoft.droid4me.app.AbstractWrappedSmartListActivity;
+import com.smartnsoft.droid4me.cache.Values.CacheException;
 import com.smartnsoft.droid4me.framework.Commands;
 import com.smartnsoft.droid4me.framework.SmartAdapters;
 import com.smartnsoft.droid4me.framework.SmartAdapters.BusinessViewWrapper;
@@ -18,18 +22,28 @@ import com.smartnsoft.droid4me.menu.StaticMenuCommand;
  * @since 2012.02.23
  */
 public final class ProjectsActivity
-    extends WrappedSmartListActivity<TitleBar.TitleBarAggregate>
+    extends AbstractWrappedSmartListActivity<TitleBar.TitleBarAggregate, ListView>
 {
 
   @Override
   public void onRetrieveDisplayObjects()
   {
-    setContentView(R.layout.projects);
+    super.onRetrieveDisplayObjects();
   }
 
   public List<? extends BusinessViewWrapper<?>> retrieveBusinessObjectsList()
       throws BusinessObjectUnavailableException
   {
+    final List<Project> projects;
+    try
+    {
+      projects = TeamCityAndroidServices.getInstance().getProjects(true);
+    }
+    catch (CacheException exception)
+    {
+      throw new BusinessObjectUnavailableException(exception);
+    }
+
     final List<BusinessViewWrapper<?>> wrappers = new ArrayList<SmartAdapters.BusinessViewWrapper<?>>();
 
     return wrappers;
@@ -38,15 +52,13 @@ public final class ProjectsActivity
   @Override
   public void onFulfillDisplayObjects()
   {
-    // TODO Auto-generated method stub
-
+    super.onFulfillDisplayObjects();
   }
 
   @Override
   public void onSynchronizeDisplayObjects()
   {
-    // TODO Auto-generated method stub
-
+    super.onSynchronizeDisplayObjects();
   }
 
   @Override

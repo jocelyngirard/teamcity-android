@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:background="#F0F0F0"
+>
+  <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|left"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_marginLeft="3dip"
+    android:layout_marginBottom="3dip"
+    android:src="@drawable/droid4me_inside"
+  />
+  <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|right"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:layout_marginRight="3dip"
+    android:layout_marginBottom="3dip"
+    android:src="@drawable/poweredby_smartnsoft"
+  />
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/topLogo"
+    android:layout_marginTop="10dip"
+    android:layout_centerHorizontal="true"
+    android:text="@string/applicationName"
+    android:textColor="#4B4B4B"
+  />
+</RelativeLayout>

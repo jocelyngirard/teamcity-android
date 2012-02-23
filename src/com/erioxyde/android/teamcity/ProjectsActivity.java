@@ -5,8 +5,10 @@ import java.util.List;
 
 import android.content.Intent;
 
-import com.smartnsoft.droid4me.app.SmartActivity;
+import com.smartnsoft.droid4me.app.WrappedSmartListActivity;
 import com.smartnsoft.droid4me.framework.Commands;
+import com.smartnsoft.droid4me.framework.SmartAdapters;
+import com.smartnsoft.droid4me.framework.SmartAdapters.BusinessViewWrapper;
 import com.smartnsoft.droid4me.menu.StaticMenuCommand;
 
 /**
@@ -16,29 +18,31 @@ import com.smartnsoft.droid4me.menu.StaticMenuCommand;
  * @since 2012.02.23
  */
 public final class ProjectsActivity
-    extends SmartActivity<TitleBar.TitleBarAggregate>
+    extends WrappedSmartListActivity<TitleBar.TitleBarAggregate>
 {
 
+  @Override
   public void onRetrieveDisplayObjects()
   {
     setContentView(R.layout.projects);
-    // TODO Auto-generated method stub
-
   }
 
-  public void onRetrieveBusinessObjects()
+  public List<? extends BusinessViewWrapper<?>> retrieveBusinessObjectsList()
       throws BusinessObjectUnavailableException
   {
-    // TODO Auto-generated method stub
+    final List<BusinessViewWrapper<?>> wrappers = new ArrayList<SmartAdapters.BusinessViewWrapper<?>>();
 
+    return wrappers;
   }
 
+  @Override
   public void onFulfillDisplayObjects()
   {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
   public void onSynchronizeDisplayObjects()
   {
     // TODO Auto-generated method stub
@@ -57,14 +61,15 @@ public final class ProjectsActivity
         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
       }
     }));
-    commands.add(new StaticMenuCommand(R.string.Projects_menu_about, '2', 'a', android.R.drawable.ic_menu_info_details, new Commands.StaticEnabledExecutable()
-    {
-      @Override
-      public void run()
-      {
-        startActivity(new Intent(getApplicationContext(), AboutActivity.class));
-      }
-    }));
+    // commands.add(new StaticMenuCommand(R.string.Projects_menu_about, '2', 'a', android.R.drawable.ic_menu_info_details, new
+    // Commands.StaticEnabledExecutable()
+    // {
+    // @Override
+    // public void run()
+    // {
+    // startActivity(new Intent(getApplicationContext(), AboutActivity.class));
+    // }
+    // }));
     return commands;
   }
 

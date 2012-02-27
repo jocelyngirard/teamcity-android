@@ -1,14 +1,28 @@
 package com.erioxyde.android.teamcity.bo;
 
-import java.util.Date;
+import java.util.List;
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+import android.text.format.Time;
 
 enum Status
 {
   SUCCESS, FAILURE, ERROR
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Build
 {
+
+  public static final class BuildList
+  {
+    public String nextHref;
+
+    public int count;
+
+    public List<Build> build;
+  }
 
   public String id;
 
@@ -18,7 +32,7 @@ public class Build
 
   public String buildTypeId;
 
-  public Date startDate;
+  public Time startDate;
 
   public String href;
 

@@ -1,5 +1,7 @@
 package com.erioxyde.android.teamcity;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,8 +10,13 @@ import android.content.DialogInterface.OnClickListener;
 import android.view.LayoutInflater;
 import android.view.Window;
 
+import com.erioxyde.android.teamcity.bo.BuildType;
+import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices;
+import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityCredentials;
+import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityInformations;
 import com.smartnsoft.droid4me.LifeCycle;
 import com.smartnsoft.droid4me.app.SmartSplashScreenActivity;
+import com.smartnsoft.droid4me.cache.Values.CacheException;
 
 /**
  * The first activity displayed while the application is loading.
@@ -19,10 +26,22 @@ import com.smartnsoft.droid4me.app.SmartSplashScreenActivity;
  */
 public final class TeamCityAndroidSplashScreenActivity
     extends SmartSplashScreenActivity<TitleBar.TitleBarAggregate>
-    implements LifeCycle.BusinessObjectsRetrievalAsynchronousPolicy, TitleBar.TitleBarDiscarded
+    implements LifeCycle.BusinessObjectsRetrievalAsynchronousPolicy, TitleBar.TitleBarDiscarded, TeamCityInformations
 {
 
   private final static int MISSING_SD_CARD_DIALOG_ID = 0;
+
+  public TeamCityCredentials getCredentials()
+  {
+    final String login = getPreferences().getString(TeamCityActivity.USER_LOGIN, null);
+    final String password = getPreferences().getString(TeamCityActivity.USER_PASSWORD, null);
+    return new TeamCityCredentials(login, password);
+  }
+
+  public String getServerURL()
+  {
+    return getPreferences().getString(TeamCityActivity.SERVER_URL, null);
+  }
 
   @Override
   protected Dialog onCreateDialog(int id)
@@ -71,16 +90,23 @@ public final class TeamCityAndroidSplashScreenActivity
   protected void onRetrieveBusinessObjectsCustom()
       throws BusinessObjectUnavailableException
   {
-    try
+    if (TeamCityAndroidApplication.hasTeamCityInformations(this) == true)
     {
-      Thread.sleep(2500);
-    }
-    catch (InterruptedException exception)
-    {
-      if (log.isErrorEnabled())
+      TeamCityAndroidServices.getInstance().setTeamCityInformations(this);
+      try
       {
-        log.error("An interruption occurred while displaying the splash screen", exception);
+        TeamCityAndroidServices.getInstance().getProjects(false);
+        final List<BuildType> buildTypes = TeamCityAndroidServices.getInstance().getBuildTypes(false);
+        for (BuildType buildType : buildTypes)
+        {
+          TeamCityAndroidServices.getInstance().getBuilds(false, buildType);
+        }
       }
+      catch (CacheException exception)
+      {
+        throw new BusinessObjectUnavailableException(exception);
+      }
+
     }
     markAsInitialized();
   }

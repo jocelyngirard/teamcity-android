@@ -7,20 +7,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.erioxyde.android.teamcity.TeamCityAndroidApplication.BelongsToUserRegistration;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices;
-import com.smartnsoft.droid4me.app.SmartActivity;
 import com.smartnsoft.droid4me.app.SmartCommands;
 
 public class LoginScreenActivity
-    extends SmartActivity<TitleBar.TitleBarAggregate>
-    implements OnClickListener
+    extends TeamCityActivity
+    implements OnClickListener, BelongsToUserRegistration
 {
-
-  public static final String SERVER_URL = "serverUrl";
-
-  public static final String USER_LOGIN = "userLogin";
-
-  public static final String USER_PASSWORD = "userPassword";
 
   private EditText uriAcces;
 
@@ -42,10 +36,11 @@ public class LoginScreenActivity
     connectButton = (Button) findViewById(R.id.connectButton);
   }
 
+  @Override
   public void onRetrieveBusinessObjects()
       throws BusinessObjectUnavailableException
   {
-
+    super.onRetrieveBusinessObjects();
   }
 
   public void onFulfillDisplayObjects()
@@ -66,8 +61,8 @@ public class LoginScreenActivity
       final String login = userLogin.getEditableText().toString();
       final String password = userPassword.getEditableText().toString();
 
-      getPreferences().edit().putString(LoginScreenActivity.SERVER_URL, serverUrl).putString(LoginScreenActivity.USER_LOGIN, login).putString(
-          LoginScreenActivity.USER_PASSWORD, password).commit();
+      getPreferences().edit().putString(TeamCityActivity.SERVER_URL, serverUrl).putString(TeamCityActivity.USER_LOGIN, login).putString(
+          TeamCityActivity.USER_PASSWORD, password).commit();
 
       progressDialog = new ProgressDialog(this);
       progressDialog.setMessage(getString(R.string.loading));
@@ -83,6 +78,7 @@ public class LoginScreenActivity
         {
           TeamCityAndroidServices.getInstance().getProjects(false);
           startActivity(new Intent(getContext(), ProjectsActivity.class));
+          finish();
         }
 
         @Override

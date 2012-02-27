@@ -6,8 +6,11 @@ import java.io.InputStream;
 import java.util.Date;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 
 import com.smartnsoft.droid4me.app.ActivityController;
 import com.smartnsoft.droid4me.app.SmartApplication;
@@ -27,6 +30,11 @@ import com.smartnsoft.droid4me.download.DownloadInstructions;
 public final class TeamCityAndroidApplication
     extends SmartApplication
 {
+
+  public interface BelongsToUserRegistration
+  {
+
+  }
 
   public static class CacheInstructions
       extends DownloadInstructions.AbstractInstructions
@@ -50,6 +58,12 @@ public final class TeamCityAndroidApplication
   }
 
   public final static DownloadInstructions.Instructions CACHE_IMAGE_INSTRUCTIONS = new TeamCityAndroidApplication.CacheInstructions();
+
+  public final static boolean hasTeamCityInformations(Context context)
+  {
+    final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    return sharedPreferences.contains(TeamCityActivity.USER_LOGIN) && sharedPreferences.contains(TeamCityActivity.USER_PASSWORD) && sharedPreferences.contains(TeamCityActivity.SERVER_URL);
+  }
 
   @Override
   protected int getLogLevel()
@@ -106,6 +120,17 @@ public final class TeamCityAndroidApplication
           else
           {
             return new Intent(activity, TeamCityAndroidSplashScreenActivity.class);
+          }
+        }
+        if (TeamCityAndroidApplication.hasTeamCityInformations(activity) == false)
+        {
+          if (activity instanceof BelongsToUserRegistration == false)
+          {
+            return new Intent(activity, LoginScreenActivity.class);
+          }
+          else
+          {
+            return null;
           }
         }
         return null;

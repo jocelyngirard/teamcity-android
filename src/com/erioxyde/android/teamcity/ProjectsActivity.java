@@ -6,12 +6,10 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.erioxyde.android.teamcity.bo.Project;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices;
-import com.smartnsoft.droid4me.app.AbstractWrappedSmartListActivity;
 import com.smartnsoft.droid4me.cache.Values.CacheException;
 import com.smartnsoft.droid4me.framework.Commands;
 import com.smartnsoft.droid4me.framework.SmartAdapters;
@@ -26,7 +24,7 @@ import com.smartnsoft.droid4me.menu.StaticMenuCommand;
  * @since 2012.02.23
  */
 public final class ProjectsActivity
-    extends AbstractWrappedSmartListActivity<TitleBar.TitleBarAggregate, ListView>
+    extends TeamCityListActivity
 {
 
   public static final class ProjectAttributes
@@ -71,12 +69,6 @@ public final class ProjectsActivity
       ((ProjectAttributes) viewAttributes).update(businessObject);
     }
 
-  }
-
-  @Override
-  public void onRetrieveDisplayObjects()
-  {
-    super.onRetrieveDisplayObjects();
   }
 
   public List<? extends BusinessViewWrapper<?>> retrieveBusinessObjectsList()

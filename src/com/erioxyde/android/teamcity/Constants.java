@@ -28,4 +28,6 @@ public abstract class Constants
    */
   public static final String WEBSERVICES_HTML_ENCODING = HTTP.ISO_8859_1;
 
+  public static final long CACHING_PERIOD_IN_MILLESCONDS = 2 * 60 * 60 * 1000;
+
 }

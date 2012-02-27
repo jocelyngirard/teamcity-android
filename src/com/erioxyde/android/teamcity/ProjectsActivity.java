@@ -3,8 +3,11 @@ package com.erioxyde.android.teamcity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.erioxyde.android.teamcity.bo.Project;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices;
@@ -13,6 +16,7 @@ import com.smartnsoft.droid4me.cache.Values.CacheException;
 import com.smartnsoft.droid4me.framework.Commands;
 import com.smartnsoft.droid4me.framework.SmartAdapters;
 import com.smartnsoft.droid4me.framework.SmartAdapters.BusinessViewWrapper;
+import com.smartnsoft.droid4me.framework.SmartAdapters.SimpleBusinessViewWrapper;
 import com.smartnsoft.droid4me.menu.StaticMenuCommand;
 
 /**
@@ -24,6 +28,50 @@ import com.smartnsoft.droid4me.menu.StaticMenuCommand;
 public final class ProjectsActivity
     extends AbstractWrappedSmartListActivity<TitleBar.TitleBarAggregate, ListView>
 {
+
+  public static final class ProjectAttributes
+  {
+
+    private final TextView text1;
+
+    private final TextView text2;
+
+    public ProjectAttributes(View view)
+    {
+      text1 = (TextView) view.findViewById(android.R.id.text1);
+      text2 = (TextView) view.findViewById(android.R.id.text2);
+    }
+
+    public void update(Project businessObject)
+    {
+      text1.setText(businessObject.name);
+      text2.setText(businessObject.id);
+    }
+
+  }
+
+  private final static class ProjectWrapper
+      extends SimpleBusinessViewWrapper<Project>
+  {
+
+    public ProjectWrapper(Project businessObject)
+    {
+      super(businessObject, 0, android.R.layout.simple_list_item_2);
+    }
+
+    @Override
+    protected Object extractNewViewAttributes(Activity activity, View view, Project businessObject)
+    {
+      return new ProjectAttributes(view);
+    }
+
+    @Override
+    protected void updateView(Activity activity, Object viewAttributes, View view, Project businessObject, int position)
+    {
+      ((ProjectAttributes) viewAttributes).update(businessObject);
+    }
+
+  }
 
   @Override
   public void onRetrieveDisplayObjects()
@@ -45,6 +93,11 @@ public final class ProjectsActivity
     }
 
     final List<BusinessViewWrapper<?>> wrappers = new ArrayList<SmartAdapters.BusinessViewWrapper<?>>();
+
+    for (Project project : projects)
+    {
+      wrappers.add(new ProjectWrapper(project));
+    }
 
     return wrappers;
   }

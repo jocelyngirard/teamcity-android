@@ -10,7 +10,6 @@ public class Project
 
   public static final class ProjectList
   {
-
     public List<Project> project;
   }
 

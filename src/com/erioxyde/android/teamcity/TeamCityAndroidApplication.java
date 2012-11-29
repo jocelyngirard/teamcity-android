@@ -138,19 +138,19 @@ public final class TeamCityAndroidApplication
     };
   }
 
-  @Override
-  protected ActivityController.Interceptor getActivityInterceptor()
-  {
-    final Intent homeActivityIntent = new Intent(getApplicationContext(), ProjectsActivity.class);
-    final TitleBar titleBar = new TitleBar(homeActivityIntent, R.drawable.title_bar_home, R.style.Theme_TeamCityAndroid);
-    return new ActivityController.Interceptor()
-    {
-      public void onLifeCycleEvent(Activity activity, Object component, ActivityController.Interceptor.InterceptorEvent event)
-      {
-        titleBar.onLifeCycleEvent(activity, component, event);
-      }
-    };
-  }
+//  @Override
+//  protected ActivityController.Interceptor getActivityInterceptor()
+//  {
+//    final Intent homeActivityIntent = new Intent(getApplicationContext(), ProjectsActivity.class);
+//    final TitleBar titleBar = new TitleBar(homeActivityIntent, R.drawable.title_bar_home, R.style.Theme_TeamCityAndroid);
+//    return new ActivityController.Interceptor()
+//    {
+//      public void onLifeCycleEvent(Activity activity, Object component, ActivityController.Interceptor.InterceptorEvent event)
+//      {
+//        titleBar.onLifeCycleEvent(activity, component, event);
+//      }
+//    };
+//  }
 
   @Override
   protected ActivityController.ExceptionHandler getExceptionHandler()

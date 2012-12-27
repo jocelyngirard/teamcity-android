@@ -1,14 +1,18 @@
 package com.erioxyde.android.teamcity.bo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BuildType {
+public class BuildType implements Serializable {
 
-    public static final class BuildTypeList {
+    private static final long serialVersionUID = 1L;
+
+    public static final class BuildTypeList implements Serializable {
+        private static final long serialVersionUID = 1L;
         public List<BuildType> buildType;
 
         public CharSequence[] getBuildTypeNames() {

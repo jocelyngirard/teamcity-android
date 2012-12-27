@@ -63,19 +63,19 @@ public final class ProjectsActivity extends TeamCityListActivity {
         }
 
         @Override
-        public boolean onObjectEvent(Activity activity, Object viewAttributes, View view, Project businessObject, ObjectEvent objectEvent, int position) {
+        public boolean onObjectEvent(final Activity activity, Object viewAttributes, View view, final Project businessObject, ObjectEvent objectEvent, int position) {
             if (objectEvent == ObjectEvent.Clicked) {
                 CharSequence[] buildTypeNames = businessObject.informations.buildTypes.getBuildTypeNames();
                 if (buildTypeNames.length > 1) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                     builder.setTitle("Build Types").setItems(buildTypeNames, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-
+                            activity.startActivity(new Intent(activity, ProjectBuildsActivity.class).putExtra(ProjectBuildsActivity.BUILD_TYPE_ID, businessObject.informations.buildTypes.buildType.get(which)));
                         }
                     });
                     builder.create().show();
                 } else {
-
+                    activity.startActivity(new Intent(activity, ProjectBuildsActivity.class).putExtra(ProjectBuildsActivity.BUILD_TYPE_ID, businessObject.informations.buildTypes.buildType.get(0)));
                 }
                 return true;
             }
@@ -86,9 +86,9 @@ public final class ProjectsActivity extends TeamCityListActivity {
     public List<? extends BusinessViewWrapper<?>> retrieveBusinessObjectsList() throws BusinessObjectUnavailableException {
         final List<Project> projects;
         try {
-            projects = TeamCityAndroidServices.getInstance().getProjects(true);
+            projects = TeamCityAndroidServices.getInstance().getProjects(fromCache);
             for (Project project : projects) {
-                project.informations = TeamCityAndroidServices.getInstance().getProject(true, project.id);
+                project.informations = TeamCityAndroidServices.getInstance().getProject(fromCache, project.id);
             }
         } catch (CacheException exception) {
             throw new BusinessObjectUnavailableException(exception);

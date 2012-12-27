@@ -10,6 +10,8 @@ import com.smartnsoft.droid4me.app.AbstractWrappedSmartListActivity;
 
 abstract public class TeamCityListActivity extends AbstractWrappedSmartListActivity<Void, ListView> implements BusinessObjectsRetrievalAsynchronousPolicy, TeamCityInformations {
 
+    protected boolean fromCache = true;
+
     public TeamCityCredentials getCredentials() {
         final String login = getPreferences().getString(TeamCityActivity.USER_LOGIN, null);
         final String password = getPreferences().getString(TeamCityActivity.USER_PASSWORD, null);

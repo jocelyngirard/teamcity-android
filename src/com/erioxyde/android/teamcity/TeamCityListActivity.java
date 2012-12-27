@@ -1,5 +1,8 @@
 package com.erioxyde.android.teamcity;
 
+import java.util.List;
+
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices;
@@ -7,6 +10,7 @@ import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityCredenti
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityInformations;
 import com.smartnsoft.droid4me.LifeCycle.BusinessObjectsRetrievalAsynchronousPolicy;
 import com.smartnsoft.droid4me.app.AbstractWrappedSmartListActivity;
+import com.smartnsoft.droid4me.framework.SmartAdapters.BusinessViewWrapper;
 
 abstract public class TeamCityListActivity extends AbstractWrappedSmartListActivity<Void, ListView> implements BusinessObjectsRetrievalAsynchronousPolicy, TeamCityInformations {
 
@@ -28,4 +32,19 @@ abstract public class TeamCityListActivity extends AbstractWrappedSmartListActiv
         TeamCityAndroidServices.getInstance().setTeamCityInformations(this);
     }
 
+    public List<? extends BusinessViewWrapper<?>> retrieveBusinessObjectsList() throws BusinessObjectUnavailableException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        int itemId = item.getItemId();
+        switch (itemId) {
+        case android.R.id.home:
+            finish();
+            break;
+        }
+        return super.onMenuItemSelected(featureId, item);
+    }
 }

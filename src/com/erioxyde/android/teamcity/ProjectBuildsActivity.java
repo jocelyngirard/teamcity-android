@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -55,10 +56,23 @@ public class ProjectBuildsActivity extends TeamCityListActivity {
 
     }
 
+    private BuildType buildType;
+
+    @Override
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        buildType = (BuildType) getIntent().getSerializableExtra(ProjectBuildsActivity.BUILD_TYPE_ID);
+        getActionBar().setTitle(buildType.projectName);
+        getActionBar().setSubtitle(buildType.name);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
     public List<? extends BusinessViewWrapper<?>> retrieveBusinessObjectsList() throws BusinessObjectUnavailableException {
         final List<Build> builds;
         try {
-            builds = TeamCityAndroidServices.getInstance().getBuilds(fromCache, (BuildType) getIntent().getSerializableExtra(ProjectBuildsActivity.BUILD_TYPE_ID));
+
+            builds = TeamCityAndroidServices.getInstance().getBuilds(fromCache, buildType);
         } catch (CacheException exception) {
             throw new BusinessObjectUnavailableException(exception);
         }
@@ -68,4 +82,5 @@ public class ProjectBuildsActivity extends TeamCityListActivity {
         }
         return wrappers;
     }
+
 }

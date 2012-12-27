@@ -194,7 +194,7 @@ public final class TeamCityAndroidServices extends WebServiceCaller {
         return buildTypesStreamParser.backed.getRetentionValue(fromCache, Constants.CACHING_PERIOD_IN_MILLESCONDS, null, null);
     }
 
-    private final BackedWSUriStreamParser.BackedUriStreamedValue<List<Build>, BuildType, JSONException, PersistenceException> buildsStreamParser = new BackedWSUriStreamParser.BackedUriStreamedValue<List<Build>, BuildType, JSONException, PersistenceException>(Persistence.getInstance(0), this) {
+    private final BackedWSUriStreamParser.BackedUriStreamedMap<List<Build>, BuildType, JSONException, PersistenceException> buildsStreamParser = new BackedWSUriStreamParser.BackedUriStreamedMap<List<Build>, BuildType, JSONException, PersistenceException>(Persistence.getInstance(0), this) {
 
         public KeysAggregator<BuildType> computeUri(BuildType parameter) {
             return SimpleIOStreamerSourceKey.fromUriStreamerSourceKey(new HttpCallTypeAndBody(computeUri(teamCityInformations.getServerURL(), "httpAuth/app/rest/buildTypes/id:" + parameter.id + "/builds/", null)), parameter);

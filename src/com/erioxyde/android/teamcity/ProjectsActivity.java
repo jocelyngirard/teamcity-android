@@ -41,7 +41,7 @@ public final class ProjectsActivity extends TeamCityListActivity {
 
         public void update(Project businessObject) {
             text1.setText(businessObject.name);
-            text2.setText(businessObject.id);
+            text2.setText(businessObject.informations.description);
         }
 
     }
@@ -68,7 +68,7 @@ public final class ProjectsActivity extends TeamCityListActivity {
                 CharSequence[] buildTypeNames = businessObject.informations.buildTypes.getBuildTypeNames();
                 if (buildTypeNames.length > 1) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    builder.setTitle("Build Types").setItems(buildTypeNames, new DialogInterface.OnClickListener() {
+                    builder.setTitle(R.string.Project_built_type).setItems(buildTypeNames, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             activity.startActivity(new Intent(activity, ProjectBuildsActivity.class).putExtra(ProjectBuildsActivity.BUILD_TYPE_ID, businessObject.informations.buildTypes.buildType.get(which)));
                         }
@@ -83,6 +83,7 @@ public final class ProjectsActivity extends TeamCityListActivity {
         }
     }
 
+    @Override
     public List<? extends BusinessViewWrapper<?>> retrieveBusinessObjectsList() throws BusinessObjectUnavailableException {
         final List<Project> projects;
         try {
@@ -122,17 +123,12 @@ public final class ProjectsActivity extends TeamCityListActivity {
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
             }
         }));
-        // commands.add(new StaticMenuCommand(R.string.Projects_menu_about, '2',
-        // 'a', android.R.drawable.ic_menu_info_details, new
-        // Commands.StaticEnabledExecutable()
-        // {
-        // @Override
-        // public void run()
-        // {
-        // startActivity(new Intent(getApplicationContext(),
-        // AboutActivity.class));
-        // }
-        // }));
+        commands.add(new StaticMenuCommand(R.string.Projects_menu_about, '2', 'a', android.R.drawable.ic_menu_info_details, new Commands.StaticEnabledExecutable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(getApplicationContext(), AboutActivity.class));
+            }
+        }));
         return commands;
     }
 

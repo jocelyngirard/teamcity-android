@@ -1,5 +1,7 @@
 package com.erioxyde.android.teamcity;
 
+import android.view.MenuItem;
+
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityCredentials;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityInformations;
@@ -26,6 +28,17 @@ public abstract class TeamCityActivity extends SmartActivity<Void> implements Bu
 
     public void onRetrieveBusinessObjects() throws BusinessObjectUnavailableException {
         TeamCityAndroidServices.getInstance().setTeamCityInformations(this);
+    }
+
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        int itemId = item.getItemId();
+        switch (itemId) {
+        case android.R.id.home:
+            finish();
+            break;
+        }
+        return super.onMenuItemSelected(featureId, item);
     }
 
 }

@@ -16,28 +16,34 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+		  <groupId>com.google.android</groupId>
+		  <artifactId>support-v4</artifactId>
+		  <version>r6</version>
+		</dependency>
+        <dependency>
             <groupId>com.smartnsoft</groupId>
             <artifactId>droid4me</artifactId>
             <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/com.smartnsoft.droid4me.jar</systemPath>
+            <!-- http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html -->
+            <!-- <scope>system</scope> -->
+            <!-- <systemPath>${project.basedir}/libs/com.smartnsoft.droid4me.jar</systemPath> -->
         </dependency>
-        <dependency>
+<!--         <dependency>
             <groupId>com.actionbarsherlock</groupId>
             <artifactId>actionbarsherlock</artifactId>
             <version>4.2.0</version>
             <type>apklib</type>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.11</version>
         </dependency>
-        <dependency>
+ <!--        <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
             <version>1.9</version>
-        </dependency>
+        </dependency> -->
     </dependencies>
 
     <build>

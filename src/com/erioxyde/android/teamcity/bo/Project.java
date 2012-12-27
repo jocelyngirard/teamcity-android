@@ -1,5 +1,6 @@
 package com.erioxyde.android.teamcity.bo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -7,8 +8,30 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Project {
 
-    public static final class ProjectList {
+    public static final class Projects {
         public List<Project> project;
+
+        public CharSequence[] getProjectsNames() {
+            if (project != null) {
+                List<String> names = new ArrayList<String>();
+                for (Project projectItem : project) {
+                    names.add(projectItem.name);
+                }
+                return names.toArray(new String[names.size()]);
+            }
+            return new String[] { "" };
+        }
+
+        public CharSequence[] getProjectsIds() {
+            if (project != null) {
+                List<String> names = new ArrayList<String>();
+                for (Project projectItem : project) {
+                    names.add(projectItem.id);
+                }
+                return names.toArray(new String[names.size()]);
+            }
+            return new String[] { "" };
+        }
     }
 
     public String id;

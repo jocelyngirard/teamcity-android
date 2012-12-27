@@ -1108,18 +1108,26 @@ containing a value of this type.
         public static final int about=0x7f050000;
     }
     public static final class string {
-        public static final int Login_connect=0x7f0b0021;
-        public static final int Login_login=0x7f0b001f;
-        public static final int Login_password=0x7f0b0020;
-        public static final int Login_serverUrl=0x7f0b001e;
-        public static final int Project_built_type=0x7f0b0023;
-        public static final int Projects_menu_about=0x7f0b001d;
-        public static final int Projects_menu_refresh=0x7f0b0024;
-        public static final int Projects_menu_settings=0x7f0b001c;
-        public static final int Settings_logout=0x7f0b0025;
-        public static final int Settings_version=0x7f0b001b;
-        public static final int TeamCityAndroidSplashScreen_dialogMessage_noSdCard=0x7f0b0019;
-        public static final int TeamCityAndroidSplashScreen_smartnsoftMoto=0x7f0b001a;
+        public static final int Login_connect=0x7f0b0029;
+        public static final int Login_login=0x7f0b0027;
+        public static final int Login_password=0x7f0b0028;
+        public static final int Login_serverUrl=0x7f0b0026;
+        public static final int Project_built_type=0x7f0b002d;
+        public static final int Projects_menu_about=0x7f0b002b;
+        public static final int Projects_menu_refresh=0x7f0b002c;
+        public static final int Projects_menu_settings=0x7f0b002a;
+        public static final int Settings_application=0x7f0b0025;
+        public static final int Settings_hidden_projects=0x7f0b001f;
+        public static final int Settings_hidden_projects_summary=0x7f0b0020;
+        public static final int Settings_login=0x7f0b0023;
+        public static final int Settings_logout=0x7f0b001d;
+        public static final int Settings_logout_summary=0x7f0b001e;
+        public static final int Settings_password=0x7f0b0024;
+        public static final int Settings_server_address=0x7f0b0022;
+        public static final int Settings_user_preferences=0x7f0b0021;
+        public static final int Settings_version=0x7f0b001c;
+        public static final int TeamCityAndroidSplashScreen_dialogMessage_noSdCard=0x7f0b001a;
+        public static final int TeamCityAndroidSplashScreen_smartnsoftMoto=0x7f0b001b;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abs__action_bar_home_description=0x7f0b0000;
@@ -1170,7 +1178,7 @@ containing a value of this type.
         public static final int connectivityProblem=0x7f0b0016;
         public static final int connectivityProblemRetry=0x7f0b0017;
         public static final int dialogButton_unhandledProblem=0x7f0b0013;
-        public static final int loading=0x7f0b0022;
+        public static final int loading=0x7f0b0019;
         public static final int problem=0x7f0b0011;
         public static final int progressDialogMessage_unhandledProblem=0x7f0b0014;
         public static final int unavailableItem=0x7f0b0018;

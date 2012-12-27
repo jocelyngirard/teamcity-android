@@ -21,13 +21,13 @@ abstract public class TeamCityListActivity extends AbstractWrappedSmartListActiv
     protected boolean fromCache = true;
 
     public TeamCityCredentials getCredentials() {
-        final String login = getPreferences().getString(TeamCityActivity.USER_LOGIN, null);
-        final String password = getPreferences().getString(TeamCityActivity.USER_PASSWORD, null);
+        final String login = getPreferences().getString(SettingsActivity.USER_LOGIN, null);
+        final String password = getPreferences().getString(SettingsActivity.USER_PASSWORD, null);
         return new TeamCityCredentials(login, password);
     }
 
     public String getServerURL() {
-        return getPreferences().getString(TeamCityActivity.SERVER_URL, null);
+        return getPreferences().getString(SettingsActivity.SERVER_URL, null);
     }
 
     @Override

@@ -53,7 +53,7 @@ public final class TeamCityAndroidApplication extends SmartApplication {
 
     public final static boolean hasTeamCityInformations(Context context) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.contains(TeamCityActivity.USER_LOGIN) && sharedPreferences.contains(TeamCityActivity.USER_PASSWORD) && sharedPreferences.contains(TeamCityActivity.SERVER_URL);
+        return sharedPreferences.contains(SettingsActivity.USER_LOGIN) && sharedPreferences.contains(SettingsActivity.USER_PASSWORD) && sharedPreferences.contains(SettingsActivity.SERVER_URL);
     }
 
     @Override

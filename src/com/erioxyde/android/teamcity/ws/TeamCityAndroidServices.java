@@ -24,8 +24,7 @@ import com.erioxyde.android.teamcity.bo.Build;
 import com.erioxyde.android.teamcity.bo.Build.BuildList;
 import com.erioxyde.android.teamcity.bo.BuildType;
 import com.erioxyde.android.teamcity.bo.BuildType.BuildTypeList;
-import com.erioxyde.android.teamcity.bo.Project;
-import com.erioxyde.android.teamcity.bo.Project.ProjectList;
+import com.erioxyde.android.teamcity.bo.Project.Projects;
 import com.erioxyde.android.teamcity.bo.ProjectInfos;
 import com.smartnsoft.droid4me.cache.Persistence;
 import com.smartnsoft.droid4me.cache.Persistence.PersistenceException;
@@ -137,19 +136,19 @@ public final class TeamCityAndroidServices extends WebServiceCaller {
         return writer.toString();
     }
 
-    private final BackedWSUriStreamParser.BackedUriStreamedValue<List<Project>, Void, JSONException, PersistenceException> projectsStreamParser = new BackedWSUriStreamParser.BackedUriStreamedValue<List<Project>, Void, JSONException, PersistenceException>(Persistence.getInstance(0), this) {
+    private final BackedWSUriStreamParser.BackedUriStreamedValue<Projects, Void, JSONException, PersistenceException> projectsStreamParser = new BackedWSUriStreamParser.BackedUriStreamedValue<Projects, Void, JSONException, PersistenceException>(Persistence.getInstance(0), this) {
 
         public KeysAggregator<Void> computeUri(Void parameter) {
             return SimpleIOStreamerSourceKey.fromUriStreamerSourceKey(new HttpCallTypeAndBody(computeUri(teamCityInformations.getServerURL(), "httpAuth/app/rest/projects/", null)), null);
         }
 
-        public List<Project> parse(Void parameter, InputStream inputStream) throws JSONException {
-            return deserializeJson(inputStream, ProjectList.class).project;
+        public Projects parse(Void parameter, InputStream inputStream) throws JSONException {
+            return deserializeJson(inputStream, Projects.class);
         }
 
     };
 
-    public final List<Project> getProjects(boolean fromCache) throws CacheException {
+    public final Projects getProjects(boolean fromCache) throws CacheException {
         if (log.isInfoEnabled()) {
             log.info("Retrieve the list of projects");
         }

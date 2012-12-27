@@ -71,7 +71,6 @@ public class ProjectBuildsActivity extends TeamCityListActivity {
     public List<? extends BusinessViewWrapper<?>> retrieveBusinessObjectsList() throws BusinessObjectUnavailableException {
         final List<Build> builds;
         try {
-
             builds = TeamCityAndroidServices.getInstance().getBuilds(fromCache, buildType);
         } catch (CacheException exception) {
             throw new BusinessObjectUnavailableException(exception);

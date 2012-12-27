@@ -1,6 +1,7 @@
 package com.erioxyde.android.teamcity;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Window;
 
 import com.erioxyde.android.teamcity.bo.Project;
+import com.erioxyde.android.teamcity.bo.Project.Projects;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityCredentials;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityInformations;
@@ -29,13 +31,13 @@ public final class TeamCityAndroidSplashScreenActivity extends SmartSplashScreen
     private final static int MISSING_SD_CARD_DIALOG_ID = 0;
 
     public TeamCityCredentials getCredentials() {
-        final String login = getPreferences().getString(TeamCityActivity.USER_LOGIN, null);
-        final String password = getPreferences().getString(TeamCityActivity.USER_PASSWORD, null);
+        final String login = getPreferences().getString(SettingsActivity.USER_LOGIN, null);
+        final String password = getPreferences().getString(SettingsActivity.USER_PASSWORD, null);
         return new TeamCityCredentials(login, password);
     }
 
     public String getServerURL() {
-        return getPreferences().getString(TeamCityActivity.SERVER_URL, null);
+        return getPreferences().getString(SettingsActivity.SERVER_URL, null);
     }
 
     @Override
@@ -76,10 +78,13 @@ public final class TeamCityAndroidSplashScreenActivity extends SmartSplashScreen
     protected void onRetrieveBusinessObjectsCustom() throws BusinessObjectUnavailableException {
         if (TeamCityAndroidApplication.hasTeamCityInformations(this) == true) {
             TeamCityAndroidServices.getInstance().setTeamCityInformations(this);
+            final Set<String> hiddenProjects = getPreferences().getStringSet(SettingsActivity.HIDDEN_PROJECTS, new HashSet<String>());
             try {
-                final List<Project> projects = TeamCityAndroidServices.getInstance().getProjects(true);
-                for (Project project : projects) {
-                    TeamCityAndroidServices.getInstance().getProject(true, project.id);
+                final Projects projects = TeamCityAndroidServices.getInstance().getProjects(true);
+                for (Project project : projects.project) {
+                    if (hiddenProjects.contains(project.id) == false) {
+                        TeamCityAndroidServices.getInstance().getProject(true, project.id);
+                    }
                 }
             } catch (CacheException exception) {
                 throw new BusinessObjectUnavailableException(exception);

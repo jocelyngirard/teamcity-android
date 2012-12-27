@@ -1,7 +1,9 @@
 package com.erioxyde.android.teamcity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.erioxyde.android.teamcity.bo.Project;
+import com.erioxyde.android.teamcity.bo.Project.Projects;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices;
 import com.smartnsoft.droid4me.cache.Values.CacheException;
 import com.smartnsoft.droid4me.framework.Commands;
@@ -85,11 +88,15 @@ public final class ProjectsActivity extends TeamCityListActivity {
 
     @Override
     public List<? extends BusinessViewWrapper<?>> retrieveBusinessObjectsList() throws BusinessObjectUnavailableException {
-        final List<Project> projects;
+        final Projects projects;
+        final Set<String> hiddenProjects = getPreferences().getStringSet(SettingsActivity.HIDDEN_PROJECTS, new HashSet<String>());
+
         try {
             projects = TeamCityAndroidServices.getInstance().getProjects(fromCache);
-            for (Project project : projects) {
-                project.informations = TeamCityAndroidServices.getInstance().getProject(fromCache, project.id);
+            for (Project project : projects.project) {
+                if (hiddenProjects.contains(project.id) == false) {
+                    project.informations = TeamCityAndroidServices.getInstance().getProject(fromCache, project.id);
+                }
             }
         } catch (CacheException exception) {
             throw new BusinessObjectUnavailableException(exception);
@@ -97,12 +104,21 @@ public final class ProjectsActivity extends TeamCityListActivity {
 
         final List<BusinessViewWrapper<?>> wrappers = new ArrayList<SmartAdapters.BusinessViewWrapper<?>>();
 
-        for (Project project : projects) {
-            wrappers.add(new ProjectWrapper(project));
+        for (Project project : projects.project) {
+            if (hiddenProjects.contains(project.id) == false) {
+                wrappers.add(new ProjectWrapper(project));
+            }
         }
 
         fromCache = true;
         return wrappers;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        refreshBusinessObjectsAndDisplay();
     }
 
     @Override

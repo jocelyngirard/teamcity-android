@@ -17,45 +17,34 @@ import com.smartnsoft.droid4me.ws.WebServiceCaller;
  * @author Jocelyn Girard
  * @since 2012.02.23
  */
-public final class AboutActivity
-    extends SmartActivity<TitleBar.TitleBarAggregate>
-    implements LifeCycle.BusinessObjectsRetrievalAsynchronousPolicy, TitleBar.TitleBarShowHomeFeature
-{
+public final class AboutActivity extends SmartActivity<Void> implements LifeCycle.BusinessObjectsRetrievalAsynchronousPolicy {
 
-  private String content;
+    private String content;
 
-  private WebView webView;
+    private WebView webView;
 
-  public void onRetrieveDisplayObjects()
-  {
-    setContentView(R.layout.about);
-    webView = (WebView) findViewById(R.id.webView);
-    webView.getSettings().setSupportMultipleWindows(false);
-    webView.getSettings().setSupportZoom(false);
-    webView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-  }
-
-  public void onRetrieveBusinessObjects()
-      throws BusinessObjectUnavailableException
-  {
-    final InputStream inputStream = getResources().openRawResource(R.raw.about);
-    try
-    {
-      content = WebServiceCaller.getString(inputStream);
+    public void onRetrieveDisplayObjects() {
+        setContentView(R.layout.about);
+        webView = (WebView) findViewById(R.id.webView);
+        webView.getSettings().setSupportMultipleWindows(false);
+        webView.getSettings().setSupportZoom(false);
+        webView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
     }
-    catch (IOException exception)
-    {
-      throw new BusinessObjectUnavailableException(exception);
+
+    public void onRetrieveBusinessObjects() throws BusinessObjectUnavailableException {
+        final InputStream inputStream = getResources().openRawResource(R.raw.about);
+        try {
+            content = WebServiceCaller.getString(inputStream);
+        } catch (IOException exception) {
+            throw new BusinessObjectUnavailableException(exception);
+        }
     }
-  }
 
-  public void onFulfillDisplayObjects()
-  {
-    webView.loadDataWithBaseURL("file:///android_asset/", content, "text/html", HTTP.UTF_8, null);
-  }
+    public void onFulfillDisplayObjects() {
+        webView.loadDataWithBaseURL("file:///android_asset/", content, "text/html", HTTP.UTF_8, null);
+    }
 
-  public void onSynchronizeDisplayObjects()
-  {
-  }
+    public void onSynchronizeDisplayObjects() {
+    }
 
 }

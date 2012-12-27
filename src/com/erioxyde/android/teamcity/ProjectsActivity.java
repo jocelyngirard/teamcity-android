@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import com.smartnsoft.droid4me.cache.Values.CacheException;
 import com.smartnsoft.droid4me.framework.Commands;
 import com.smartnsoft.droid4me.framework.SmartAdapters;
 import com.smartnsoft.droid4me.framework.SmartAdapters.BusinessViewWrapper;
+import com.smartnsoft.droid4me.framework.SmartAdapters.ObjectEvent;
 import com.smartnsoft.droid4me.framework.SmartAdapters.SimpleBusinessViewWrapper;
 import com.smartnsoft.droid4me.menu.StaticMenuCommand;
 
@@ -23,111 +26,114 @@ import com.smartnsoft.droid4me.menu.StaticMenuCommand;
  * @author Jocelyn Girard
  * @since 2012.02.23
  */
-public final class ProjectsActivity
-    extends TeamCityListActivity
-{
+public final class ProjectsActivity extends TeamCityListActivity {
 
-  public static final class ProjectAttributes
-  {
+    public static final class ProjectAttributes {
 
-    private final TextView text1;
+        private final TextView text1;
 
-    private final TextView text2;
+        private final TextView text2;
 
-    public ProjectAttributes(View view)
-    {
-      text1 = (TextView) view.findViewById(android.R.id.text1);
-      text2 = (TextView) view.findViewById(android.R.id.text2);
+        public ProjectAttributes(View view) {
+            text1 = (TextView) view.findViewById(android.R.id.text1);
+            text2 = (TextView) view.findViewById(android.R.id.text2);
+        }
+
+        public void update(Project businessObject) {
+            text1.setText(businessObject.name);
+            text2.setText(businessObject.id);
+        }
+
     }
 
-    public void update(Project businessObject)
-    {
-      text1.setText(businessObject.name);
-      text2.setText(businessObject.id);
+    private final static class ProjectWrapper extends SimpleBusinessViewWrapper<Project> {
+
+        public ProjectWrapper(Project businessObject) {
+            super(businessObject, 0, android.R.layout.simple_list_item_2);
+        }
+
+        @Override
+        protected Object extractNewViewAttributes(Activity activity, View view, Project businessObject) {
+            return new ProjectAttributes(view);
+        }
+
+        @Override
+        protected void updateView(Activity activity, Object viewAttributes, View view, Project businessObject, int position) {
+            ((ProjectAttributes) viewAttributes).update(businessObject);
+        }
+
+        @Override
+        public boolean onObjectEvent(Activity activity, Object viewAttributes, View view, Project businessObject, ObjectEvent objectEvent, int position) {
+            if (objectEvent == ObjectEvent.Clicked) {
+                CharSequence[] buildTypeNames = businessObject.informations.buildTypes.getBuildTypeNames();
+                if (buildTypeNames.length > 1) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setTitle("Build Types").setItems(buildTypeNames, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    builder.create().show();
+                } else {
+
+                }
+                return true;
+            }
+            return super.onObjectEvent(activity, viewAttributes, view, businessObject, objectEvent, position);
+        }
     }
 
-  }
+    public List<? extends BusinessViewWrapper<?>> retrieveBusinessObjectsList() throws BusinessObjectUnavailableException {
+        final List<Project> projects;
+        try {
+            projects = TeamCityAndroidServices.getInstance().getProjects(true);
+            for (Project project : projects) {
+                project.informations = TeamCityAndroidServices.getInstance().getProject(true, project.id);
+            }
+        } catch (CacheException exception) {
+            throw new BusinessObjectUnavailableException(exception);
+        }
 
-  private final static class ProjectWrapper
-      extends SimpleBusinessViewWrapper<Project>
-  {
+        final List<BusinessViewWrapper<?>> wrappers = new ArrayList<SmartAdapters.BusinessViewWrapper<?>>();
 
-    public ProjectWrapper(Project businessObject)
-    {
-      super(businessObject, 0, android.R.layout.simple_list_item_2);
+        for (Project project : projects) {
+            wrappers.add(new ProjectWrapper(project));
+        }
+
+        return wrappers;
     }
 
     @Override
-    protected Object extractNewViewAttributes(Activity activity, View view, Project businessObject)
-    {
-      return new ProjectAttributes(view);
+    public void onFulfillDisplayObjects() {
+        super.onFulfillDisplayObjects();
     }
 
     @Override
-    protected void updateView(Activity activity, Object viewAttributes, View view, Project businessObject, int position)
-    {
-      ((ProjectAttributes) viewAttributes).update(businessObject);
+    public void onSynchronizeDisplayObjects() {
+        super.onSynchronizeDisplayObjects();
     }
 
-  }
-
-  public List<? extends BusinessViewWrapper<?>> retrieveBusinessObjectsList()
-      throws BusinessObjectUnavailableException
-  {
-    final List<Project> projects;
-    try
-    {
-      projects = TeamCityAndroidServices.getInstance().getProjects(true);
+    @Override
+    public List<StaticMenuCommand> getMenuCommands() {
+        final List<StaticMenuCommand> commands = new ArrayList<StaticMenuCommand>();
+        commands.add(new StaticMenuCommand(R.string.Projects_menu_settings, '1', 's', android.R.drawable.ic_menu_preferences, new Commands.StaticEnabledExecutable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+            }
+        }));
+        // commands.add(new StaticMenuCommand(R.string.Projects_menu_about, '2',
+        // 'a', android.R.drawable.ic_menu_info_details, new
+        // Commands.StaticEnabledExecutable()
+        // {
+        // @Override
+        // public void run()
+        // {
+        // startActivity(new Intent(getApplicationContext(),
+        // AboutActivity.class));
+        // }
+        // }));
+        return commands;
     }
-    catch (CacheException exception)
-    {
-      throw new BusinessObjectUnavailableException(exception);
-    }
-
-    final List<BusinessViewWrapper<?>> wrappers = new ArrayList<SmartAdapters.BusinessViewWrapper<?>>();
-
-    for (Project project : projects)
-    {
-      wrappers.add(new ProjectWrapper(project));
-    }
-
-    return wrappers;
-  }
-
-  @Override
-  public void onFulfillDisplayObjects()
-  {
-    super.onFulfillDisplayObjects();
-  }
-
-  @Override
-  public void onSynchronizeDisplayObjects()
-  {
-    super.onSynchronizeDisplayObjects();
-  }
-
-  @Override
-  public List<StaticMenuCommand> getMenuCommands()
-  {
-    final List<StaticMenuCommand> commands = new ArrayList<StaticMenuCommand>();
-    commands.add(new StaticMenuCommand(R.string.Projects_menu_settings, '1', 's', android.R.drawable.ic_menu_preferences, new Commands.StaticEnabledExecutable()
-    {
-      @Override
-      public void run()
-      {
-        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-      }
-    }));
-    // commands.add(new StaticMenuCommand(R.string.Projects_menu_about, '2', 'a', android.R.drawable.ic_menu_info_details, new
-    // Commands.StaticEnabledExecutable()
-    // {
-    // @Override
-    // public void run()
-    // {
-    // startActivity(new Intent(getApplicationContext(), AboutActivity.class));
-    // }
-    // }));
-    return commands;
-  }
 
 }

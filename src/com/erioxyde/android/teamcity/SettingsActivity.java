@@ -11,29 +11,21 @@ import com.smartnsoft.droid4me.app.SmartPreferenceActivity;
  * @author Jocelyn Girard
  * @since 2012.02.23
  */
-public final class SettingsActivity
-    extends SmartPreferenceActivity<TitleBar.TitleBarAggregate>
-    implements TitleBar.TitleBarShowHomeFeature
-{
+public final class SettingsActivity extends SmartPreferenceActivity<Void> {
 
-  public void onRetrieveDisplayObjects()
-  {
-    addPreferencesFromResource(R.xml.settings);
-    {
-      final Preference versionPreference = findPreference("version");
-      try
-      {
-        versionPreference.setSummary(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
-      }
-      catch (NameNotFoundException exception)
-      {
-        if (log.isErrorEnabled())
+    public void onRetrieveDisplayObjects() {
+        addPreferencesFromResource(R.xml.settings);
         {
-          log.error("Cannot determine the application version name", exception);
+            final Preference versionPreference = findPreference("version");
+            try {
+                versionPreference.setSummary(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+            } catch (NameNotFoundException exception) {
+                if (log.isErrorEnabled()) {
+                    log.error("Cannot determine the application version name", exception);
+                }
+                versionPreference.setSummary("???");
+            }
         }
-        versionPreference.setSummary("???");
-      }
     }
-  }
 
 }

@@ -8,28 +8,22 @@ import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityInformat
 import com.smartnsoft.droid4me.LifeCycle.BusinessObjectsRetrievalAsynchronousPolicy;
 import com.smartnsoft.droid4me.app.AbstractWrappedSmartListActivity;
 
-abstract public class TeamCityListActivity
-    extends AbstractWrappedSmartListActivity<TitleBar.TitleBarAggregate, ListView>
-    implements BusinessObjectsRetrievalAsynchronousPolicy, TeamCityInformations
-{
+abstract public class TeamCityListActivity extends AbstractWrappedSmartListActivity<Void, ListView> implements BusinessObjectsRetrievalAsynchronousPolicy, TeamCityInformations {
 
-  public TeamCityCredentials getCredentials()
-  {
-    final String login = getPreferences().getString(TeamCityActivity.USER_LOGIN, null);
-    final String password = getPreferences().getString(TeamCityActivity.USER_PASSWORD, null);
-    return new TeamCityCredentials(login, password);
-  }
+    public TeamCityCredentials getCredentials() {
+        final String login = getPreferences().getString(TeamCityActivity.USER_LOGIN, null);
+        final String password = getPreferences().getString(TeamCityActivity.USER_PASSWORD, null);
+        return new TeamCityCredentials(login, password);
+    }
 
-  public String getServerURL()
-  {
-    return getPreferences().getString(TeamCityActivity.SERVER_URL, null);
-  }
+    public String getServerURL() {
+        return getPreferences().getString(TeamCityActivity.SERVER_URL, null);
+    }
 
-  @Override
-  public void onRetrieveDisplayObjects()
-  {
-    super.onRetrieveDisplayObjects();
-    TeamCityAndroidServices.getInstance().setTeamCityInformations(this);
-  }
+    @Override
+    public void onRetrieveDisplayObjects() {
+        super.onRetrieveDisplayObjects();
+        TeamCityAndroidServices.getInstance().setTeamCityInformations(this);
+    }
 
 }

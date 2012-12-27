@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="lib" path="libs/com.smartnsoft.droid4me.jar"/>
-	<classpathentry kind="lib" path="libs/jackson-core-asl-1.9.11.jar"/>
-	<classpathentry kind="lib" path="libs/jackson-mapper-asl-1.9.11.jar"/>
-	<classpathentry kind="lib" path="libs/android-support-v4.jar"/>
-	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="src" path="gen">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="src" output="bin/classes" path="src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>

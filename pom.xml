@@ -20,6 +20,7 @@
             <groupId>com.google.android</groupId>
             <artifactId>support-v4</artifactId>
             <version>r6</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.smartnsoft</groupId>
@@ -32,12 +33,12 @@
             <!-- <scope>system</scope> -->
             <!-- <systemPath>${project.basedir}/libs/com.smartnsoft.droid4me.jar</systemPath> -->
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>com.actionbarsherlock</groupId>-->
-        <!--<artifactId>actionbarsherlock</artifactId>-->
-        <!--<version>4.2.0</version>-->
-        <!--<type>apklib</type>-->
-        <!--</dependency> -->
+        <dependency>
+	        <groupId>com.actionbarsherlock</groupId>
+	        <artifactId>actionbarsherlock</artifactId>
+	        <version>4.2.0</version>
+	        <type>apklib</type>
+        </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>

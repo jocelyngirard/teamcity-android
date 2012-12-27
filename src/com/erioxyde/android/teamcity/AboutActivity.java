@@ -6,7 +6,7 @@ package com.erioxyde.android.teamcity;
  * @author Jocelyn Girard
  * @since 2012.02.23
  */
-public final class AboutActivity extends TeamCityActivity {
+public final class AboutActivity extends TeamCityFragmentActivity {
 
     public void onRetrieveDisplayObjects() {
         setContentView(R.layout.about);

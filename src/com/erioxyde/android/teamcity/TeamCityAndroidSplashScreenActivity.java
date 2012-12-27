@@ -5,7 +5,6 @@ import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.view.LayoutInflater;
@@ -26,10 +25,8 @@ import com.smartnsoft.droid4me.cache.Values.CacheException;
  * @author Jocelyn Girard
  * @since 2012.02.23
  */
-public final class TeamCityAndroidSplashScreenActivity extends SmartSplashScreenActivity<Void> implements LifeCycle.BusinessObjectsRetrievalAsynchronousPolicy, TeamCityInformations {
-
-    private final static int MISSING_SD_CARD_DIALOG_ID = 0;
-
+public final class TeamCityAndroidSplashScreenActivity extends SmartSplashScreenActivity<Void, Void> implements LifeCycle.BusinessObjectsRetrievalAsynchronousPolicy, TeamCityInformations {
+ 
     public TeamCityCredentials getCredentials() {
         final String login = getPreferences().getString(SettingsActivity.USER_LOGIN, null);
         final String password = getPreferences().getString(SettingsActivity.USER_PASSWORD, null);
@@ -40,26 +37,19 @@ public final class TeamCityAndroidSplashScreenActivity extends SmartSplashScreen
         return getPreferences().getString(SettingsActivity.SERVER_URL, null);
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        if (id == TeamCityAndroidSplashScreenActivity.MISSING_SD_CARD_DIALOG_ID) {
-            return new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(R.string.applicationName).setMessage(R.string.TeamCityAndroidSplashScreen_dialogMessage_noSdCard).setPositiveButton(android.R.string.ok, new OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            }).create();
-        }
-        return super.onCreateDialog(id);
-    }
 
     @Override
     protected boolean requiresExternalStorage() {
         return true;
     }
 
-    @Override
+	@Override
     protected void onNoExternalStorage() {
-        showDialog(TeamCityAndroidSplashScreenActivity.MISSING_SD_CARD_DIALOG_ID);
+    	new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(R.string.applicationName).setMessage(R.string.TeamCityAndroidSplashScreen_dialogMessage_noSdCard).setPositiveButton(android.R.string.ok, new OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        }).create().show();
     }
 
     @Override
@@ -75,7 +65,7 @@ public final class TeamCityAndroidSplashScreenActivity extends SmartSplashScreen
     }
 
     @Override
-    protected void onRetrieveBusinessObjectsCustom() throws BusinessObjectUnavailableException {
+    protected Void onRetrieveBusinessObjectsCustom() throws BusinessObjectUnavailableException {
         if (TeamCityAndroidApplication.hasTeamCityInformations(this) == true) {
             TeamCityAndroidServices.getInstance().setTeamCityInformations(this);
             final Set<String> hiddenProjects = getPreferences().getStringSet(SettingsActivity.HIDDEN_PROJECTS, new HashSet<String>());
@@ -91,7 +81,7 @@ public final class TeamCityAndroidSplashScreenActivity extends SmartSplashScreen
             }
 
         }
-        markAsInitialized();
+        return null;
     }
 
 }

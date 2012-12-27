@@ -11,7 +11,7 @@ import com.erioxyde.android.teamcity.TeamCityAndroidApplication.BelongsToUserReg
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices;
 import com.smartnsoft.droid4me.app.SmartCommands;
 
-public class LoginScreenActivity extends TeamCityActivity implements OnClickListener, BelongsToUserRegistration {
+public class LoginScreenActivity extends TeamCityFragmentActivity implements OnClickListener, BelongsToUserRegistration {
 
     private EditText uriAcces;
 

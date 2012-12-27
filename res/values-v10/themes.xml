@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style
+    name="Theme.TeamCityAndroid"
+    parent="android:Theme.Holo.Light"
+  >
+  </style>
+
+</resources>

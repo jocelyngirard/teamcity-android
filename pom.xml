@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.erioxyde.android.teamcity</groupId>
     <artifactId>TeamCityAndroid</artifactId>
@@ -16,34 +17,37 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-		  <groupId>com.google.android</groupId>
-		  <artifactId>support-v4</artifactId>
-		  <version>r6</version>
-		</dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>support-v4</artifactId>
+            <version>r6</version>
+        </dependency>
         <dependency>
             <groupId>com.smartnsoft</groupId>
             <artifactId>droid4me</artifactId>
             <version>1.0</version>
-            <!-- http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html -->
+            <!--
+            http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html
+            cmd : mvn install:install-file -Dfile=libs/com.smartnsoft.droid4me.jar -DgroupId=com.smartnsoft -DartifactId=droid4me -Dversion=1.0 -Dpackaging=jar
+            -->
             <!-- <scope>system</scope> -->
             <!-- <systemPath>${project.basedir}/libs/com.smartnsoft.droid4me.jar</systemPath> -->
         </dependency>
-<!--         <dependency>
-            <groupId>com.actionbarsherlock</groupId>
-            <artifactId>actionbarsherlock</artifactId>
-            <version>4.2.0</version>
-            <type>apklib</type>
-        </dependency> -->
+        <!--<dependency>-->
+        <!--<groupId>com.actionbarsherlock</groupId>-->
+        <!--<artifactId>actionbarsherlock</artifactId>-->
+        <!--<version>4.2.0</version>-->
+        <!--<type>apklib</type>-->
+        <!--</dependency> -->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.11</version>
         </dependency>
- <!--        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>1.9</version>
-        </dependency> -->
+        <!--<dependency>-->
+        <!--<groupId>com.sun.jersey</groupId>-->
+        <!--<artifactId>jersey-client</artifactId>-->
+        <!--<version>1.9</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>

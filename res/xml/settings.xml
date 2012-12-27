@@ -1,12 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-  <Preference
-    android:key="version"
-    android:persistent="false"
-    android:selectable="false"
-    android:title="@string/Settings_version"
-    android:summary=""
-  />
+    <PreferenceCategory android:title="User preferences" >
+    </PreferenceCategory>
+
+    <EditTextPreference
+        android:key="serverUrl"
+        android:persistent="true"
+        android:title="Server address"
+        android:inputType="textUri" />
+    <EditTextPreference
+        android:key="userLogin"
+        android:persistent="true"
+        android:title="Login" />
+    <EditTextPreference
+        android:key="userPassword"
+        android:persistent="true"
+        android:title="Password"
+        android:inputType="textPassword"
+    />
+
+    <Preference
+        android:enabled="true"
+        android:key="logout"
+        android:persistent="false"
+        android:selectable="true"
+        android:title="@string/Settings_logout" />
+
+    <PreferenceCategory android:title="Application" >
+    </PreferenceCategory>
+
+    <Preference
+        android:key="version"
+        android:persistent="false"
+        android:selectable="false"
+        android:summary=""
+        android:title="@string/Settings_version" />
 
 </PreferenceScreen>

@@ -18,7 +18,7 @@ import com.smartnsoft.droid4me.framework.SmartAdapters.SimpleBusinessViewWrapper
 
 public class ProjectBuildsActivity extends TeamCityListActivity {
 
-    public static final String BUILD_TYPE_ID = "buildTypeId";
+    public static final String BUILD_TYPE = "buildTypeId";
 
     public static final class BuildAttributes {
 
@@ -61,7 +61,7 @@ public class ProjectBuildsActivity extends TeamCityListActivity {
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        buildType = (BuildType) getIntent().getSerializableExtra(ProjectBuildsActivity.BUILD_TYPE_ID);
+        buildType = (BuildType) getIntent().getSerializableExtra(ProjectBuildsActivity.BUILD_TYPE);
         getActionBar().setTitle(buildType.projectName);
         getActionBar().setSubtitle(buildType.name);
         getActionBar().setDisplayHomeAsUpEnabled(true);

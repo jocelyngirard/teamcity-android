@@ -70,12 +70,12 @@ public final class ProjectsActivity extends TeamCityListActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                     builder.setTitle(R.string.Project_built_type).setItems(buildTypeNames, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            activity.startActivity(new Intent(activity, ProjectBuildsActivity.class).putExtra(ProjectBuildsActivity.BUILD_TYPE_ID, businessObject.informations.buildTypes.buildType.get(which)));
+                            activity.startActivity(new Intent(activity, ProjectBuildsActivity.class).putExtra(ProjectBuildsActivity.BUILD_TYPE, businessObject.informations.buildTypes.buildType.get(which)));
                         }
                     });
                     builder.create().show();
                 } else {
-                    activity.startActivity(new Intent(activity, ProjectBuildsActivity.class).putExtra(ProjectBuildsActivity.BUILD_TYPE_ID, businessObject.informations.buildTypes.buildType.get(0)));
+                    activity.startActivity(new Intent(activity, ProjectBuildsActivity.class).putExtra(ProjectBuildsActivity.BUILD_TYPE, businessObject.informations.buildTypes.buildType.get(0)));
                 }
                 return true;
             }
@@ -101,6 +101,7 @@ public final class ProjectsActivity extends TeamCityListActivity {
             wrappers.add(new ProjectWrapper(project));
         }
 
+        fromCache = true;
         return wrappers;
     }
 
@@ -116,14 +117,14 @@ public final class ProjectsActivity extends TeamCityListActivity {
 
     @Override
     public List<StaticMenuCommand> getMenuCommands() {
-        final List<StaticMenuCommand> commands = new ArrayList<StaticMenuCommand>();
-        commands.add(new StaticMenuCommand(R.string.Projects_menu_settings, '1', 's', android.R.drawable.ic_menu_preferences, new Commands.StaticEnabledExecutable() {
+        final List<StaticMenuCommand> commands = super.getMenuCommands();
+        commands.add(new StaticMenuCommand(R.string.Projects_menu_settings, '2', 's', android.R.drawable.ic_menu_preferences, new Commands.StaticEnabledExecutable() {
             @Override
             public void run() {
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
             }
         }));
-        commands.add(new StaticMenuCommand(R.string.Projects_menu_about, '2', 'a', android.R.drawable.ic_menu_info_details, new Commands.StaticEnabledExecutable() {
+        commands.add(new StaticMenuCommand(R.string.Projects_menu_about, '3', 'a', android.R.drawable.ic_menu_info_details, new Commands.StaticEnabledExecutable() {
             @Override
             public void run() {
                 startActivity(new Intent(getApplicationContext(), AboutActivity.class));

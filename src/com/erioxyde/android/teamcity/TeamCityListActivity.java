@@ -1,5 +1,6 @@
 package com.erioxyde.android.teamcity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.view.MenuItem;
@@ -10,7 +11,10 @@ import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityCredenti
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityInformations;
 import com.smartnsoft.droid4me.LifeCycle.BusinessObjectsRetrievalAsynchronousPolicy;
 import com.smartnsoft.droid4me.app.AbstractWrappedSmartListActivity;
+import com.smartnsoft.droid4me.framework.Commands;
 import com.smartnsoft.droid4me.framework.SmartAdapters.BusinessViewWrapper;
+import com.smartnsoft.droid4me.menu.StaticMenuCommand;
+import com.smartnsoft.droid4me.support.v4.menu.ActionMenuCommand;
 
 abstract public class TeamCityListActivity extends AbstractWrappedSmartListActivity<Void, ListView> implements BusinessObjectsRetrievalAsynchronousPolicy, TeamCityInformations {
 
@@ -35,6 +39,19 @@ abstract public class TeamCityListActivity extends AbstractWrappedSmartListActiv
     public List<? extends BusinessViewWrapper<?>> retrieveBusinessObjectsList() throws BusinessObjectUnavailableException {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public List<StaticMenuCommand> getMenuCommands() {
+        final List<StaticMenuCommand> commands = new ArrayList<StaticMenuCommand>();
+        commands.add(new ActionMenuCommand(R.string.Projects_menu_refresh, '1', 'r', android.R.drawable.ic_menu_rotate, MenuItem.SHOW_AS_ACTION_ALWAYS, new Commands.StaticEnabledExecutable() {
+            @Override
+            public void run() {
+                fromCache = false;
+                refreshBusinessObjectsAndDisplay();
+            }
+        }));
+        return commands;
     }
 
     @Override

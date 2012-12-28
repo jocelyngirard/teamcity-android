@@ -32,22 +32,4 @@ public final class ProjectsActivity extends TeamCityFragmentActivity
 
 	}
 
-    @Override
-    public List<StaticMenuCommand> getMenuCommands() {
-        final List<StaticMenuCommand> commands = super.getMenuCommands();
-        commands.add(new StaticMenuCommand(R.string.Projects_menu_settings, '2', 's', android.R.drawable.ic_menu_preferences, new Commands.StaticEnabledExecutable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-            }
-        }));
-        commands.add(new StaticMenuCommand(R.string.Projects_menu_about, '3', 'a', android.R.drawable.ic_menu_info_details, new Commands.StaticEnabledExecutable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(getApplicationContext(), AboutActivity.class));
-            }
-        }));
-        return commands;
-    }
-
 }

@@ -4,6 +4,7 @@ package com.erioxyde.android.teamcity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
@@ -11,6 +12,7 @@ import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityCredentials;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityInformations;
 import com.smartnsoft.droid4me.LifeCycle.BusinessObjectsRetrievalAsynchronousPolicy;
+import com.smartnsoft.droid4me.app.AppPublics;
 import com.smartnsoft.droid4me.framework.Commands;
 import com.smartnsoft.droid4me.menu.StaticMenuCommand;
 import com.smartnsoft.droid4me.support.v4.app.SmartFragmentActivity;
@@ -33,7 +35,7 @@ public abstract class TeamCityFragmentActivity extends SmartFragmentActivity<Voi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setProgressBarIndeterminateVisibility(true);
+        setProgressBarIndeterminateVisibility(Boolean.TRUE);
         super.onCreate(savedInstanceState);
     }
 
@@ -44,18 +46,23 @@ public abstract class TeamCityFragmentActivity extends SmartFragmentActivity<Voi
     @Override
     public List<StaticMenuCommand> getMenuCommands() {
         final List<StaticMenuCommand> commands = new ArrayList<StaticMenuCommand>();
-        commands.add(new ActionMenuCommand(R.string.Projects_menu_refresh, '1', 'r', android.R.drawable.ic_menu_rotate, MenuItem.SHOW_AS_ACTION_ALWAYS, new Commands.StaticEnabledExecutable() {
-			@Override
+        commands.add(new StaticMenuCommand(R.string.Projects_menu_settings, '2', 's', android.R.drawable.ic_menu_preferences, new Commands.StaticEnabledExecutable() {
+            @Override
             public void run() {
-                fromCache = false;
-                refreshBusinessObjectsAndDisplay();
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+            }
+        }));
+        commands.add(new StaticMenuCommand(R.string.Projects_menu_about, '3', 'a', android.R.drawable.ic_menu_info_details, new Commands.StaticEnabledExecutable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(getApplicationContext(), AboutActivity.class));
             }
         }));
         return commands;
     }
 	
 	private void refreshBusinessObjectsAndDisplay() {
-		refreshBusinessObjectsAndDisplay(true, null, true);
+		sendBroadcast(new Intent(AppPublics.RELOAD_ACTION));
 	}
 	
 	@Override

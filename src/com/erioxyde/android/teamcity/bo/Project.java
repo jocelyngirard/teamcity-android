@@ -8,6 +8,8 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Project {
 
+
+
     public static final class Projects {
         public List<Project> project;
 
@@ -41,6 +43,10 @@ public class Project {
     public String href;
 
     public ProjectInfos informations;
+
+    public int success = 0;
+
+    public int errors = 0;
 
     @Override
     public int hashCode() {

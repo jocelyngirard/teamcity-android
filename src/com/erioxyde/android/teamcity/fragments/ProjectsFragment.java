@@ -1,31 +1,36 @@
 package com.erioxyde.android.teamcity.fragments;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.erioxyde.android.teamcity.AboutActivity;
 import com.erioxyde.android.teamcity.ProjectBuildsActivity;
 import com.erioxyde.android.teamcity.R;
 import com.erioxyde.android.teamcity.SettingsActivity;
+import com.erioxyde.android.teamcity.bo.Build;
+import com.erioxyde.android.teamcity.bo.BuildType;
 import com.erioxyde.android.teamcity.bo.Project;
 import com.erioxyde.android.teamcity.bo.Project.Projects;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices;
 import com.smartnsoft.droid4me.LifeCycle.BusinessObjectsRetrievalAsynchronousPolicy;
+import com.smartnsoft.droid4me.app.AppPublics;
 import com.smartnsoft.droid4me.cache.Values.CacheException;
+import com.smartnsoft.droid4me.framework.Commands;
 import com.smartnsoft.droid4me.framework.SmartAdapters;
 import com.smartnsoft.droid4me.framework.SmartAdapters.BusinessViewWrapper;
 import com.smartnsoft.droid4me.framework.SmartAdapters.ObjectEvent;
 import com.smartnsoft.droid4me.framework.SmartAdapters.SimpleBusinessViewWrapper;
+import com.smartnsoft.droid4me.menu.StaticMenuCommand;
 import com.smartnsoft.droid4me.support.v4.app.SmartListViewFragment;
+import com.smartnsoft.droid4me.support.v4.menu.ActionMenuCommand;
 
 /**
  * The starting screen of the application.
@@ -33,7 +38,7 @@ import com.smartnsoft.droid4me.support.v4.app.SmartListViewFragment;
  * @author Jocelyn Girard
  * @since 2012.02.23
  */
-public final class ProjectsFragment extends SmartListViewFragment<Void, ListView> implements BusinessObjectsRetrievalAsynchronousPolicy{
+public final class ProjectsFragment extends SmartListViewFragment<Void, ListView> implements BusinessObjectsRetrievalAsynchronousPolicy {
 
     public static final class ProjectAttributes {
 
@@ -102,6 +107,22 @@ public final class ProjectsFragment extends SmartListViewFragment<Void, ListView
           for (Project project : projects.project) {
               if (hiddenProjects.contains(project.id) == false) {
                   project.informations = TeamCityAndroidServices.getInstance().getProject(fromCache, project.id);
+                  if (project.informations != null && project.informations.buildTypes != null && project.informations.buildTypes.buildType.size() > 0)
+                  for (BuildType buildType : project.informations.buildTypes.buildType)
+                  {
+                      final Build.BuildList builds = TeamCityAndroidServices.getInstance().getBuilds(fromCache, buildType, 1);
+                      if (builds.count > 0)
+                      {
+                         if (builds.build.get(0).status == Build.Status.SUCCESS) {
+                             ++project.success;
+                         }
+                          else
+                         {
+                             ++project.errors;
+                         }
+                      }
+                  }
+
               }
           }
       } catch (CacheException exception) {
@@ -123,6 +144,7 @@ public final class ProjectsFragment extends SmartListViewFragment<Void, ListView
     @Override
     public void onResume() {
         super.onResume();
+        setHasOptionsMenu(true);
         if (isRefreshingBusinessObjectsAndDisplay() == false)
         {
             refreshBusinessObjectsAndDisplay();
@@ -139,4 +161,16 @@ public final class ProjectsFragment extends SmartListViewFragment<Void, ListView
         super.onSynchronizeDisplayObjects();
     }
 
+    @Override
+    public List<StaticMenuCommand> getMenuCommands() {
+        final List<StaticMenuCommand> commands = new ArrayList<StaticMenuCommand>();
+        commands.add(new ActionMenuCommand(R.string.Projects_menu_refresh, '1', 'r', android.R.drawable.ic_menu_rotate, MenuItem.SHOW_AS_ACTION_ALWAYS, new Commands.StaticEnabledExecutable() {
+            @Override
+            public void run() {
+                fromCache = false;
+                refreshBusinessObjectsAndDisplay();
+            }
+        }));
+        return commands;
+    }
 }

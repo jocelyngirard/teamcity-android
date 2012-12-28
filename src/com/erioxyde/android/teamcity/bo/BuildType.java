@@ -11,6 +11,21 @@ public class BuildType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static final class BuildTypeParams {
+
+        public BuildType buildType;
+        public int count;
+
+        public BuildTypeParams(BuildType buildType) {
+            this(buildType, -1);
+        }
+
+        public BuildTypeParams(BuildType buildType, int count) {
+            this.buildType = buildType;
+            this.count = count;
+        }
+    }
+
     public static final class BuildTypeList implements Serializable {
         private static final long serialVersionUID = 1L;
         public List<BuildType> buildType;

@@ -169,7 +169,7 @@ public final class TeamCityAndroidServices extends WebServiceCaller {
 
     public final ProjectInfos getProject(boolean fromCache, String projectId) throws CacheException {
         if (log.isInfoEnabled()) {
-            log.info("Retrieve the projects with id:" + projectId);
+            log.info("Retrieve the project with id:" + projectId);
         }
         return projectStreamParser.backed.getRetentionValue(fromCache, Constants.CACHING_PERIOD_IN_MILLESCONDS, null, projectId);
     }
@@ -193,23 +193,27 @@ public final class TeamCityAndroidServices extends WebServiceCaller {
         return buildTypesStreamParser.backed.getRetentionValue(fromCache, Constants.CACHING_PERIOD_IN_MILLESCONDS, null, null);
     }
 
-    private final BackedWSUriStreamParser.BackedUriStreamedMap<List<Build>, BuildType, JSONException, PersistenceException> buildsStreamParser = new BackedWSUriStreamParser.BackedUriStreamedMap<List<Build>, BuildType, JSONException, PersistenceException>(Persistence.getInstance(0), this) {
+    private final BackedWSUriStreamParser.BackedUriStreamedMap<BuildList, BuildType.BuildTypeParams, JSONException, PersistenceException> buildsStreamParser = new BackedWSUriStreamParser.BackedUriStreamedMap<BuildList, BuildType.BuildTypeParams, JSONException, PersistenceException>(Persistence.getInstance(0), this) {
 
-        public KeysAggregator<BuildType> computeUri(BuildType parameter) {
-            return SimpleIOStreamerSourceKey.fromUriStreamerSourceKey(new HttpCallTypeAndBody(computeUri(teamCityInformations.getServerURL(), "httpAuth/app/rest/buildTypes/id:" + parameter.id + "/builds/", null)), parameter);
+        public KeysAggregator<BuildType.BuildTypeParams> computeUri(BuildType.BuildTypeParams parameter) {
+            return SimpleIOStreamerSourceKey.fromUriStreamerSourceKey(new HttpCallTypeAndBody(computeUri(teamCityInformations.getServerURL(), "httpAuth/app/rest/buildTypes/id:" + parameter.buildType.id + "/builds" + (parameter.count > 0 ? "?count=" + parameter.count : "/"), null)), parameter);
         }
 
-        public List<Build> parse(BuildType parameter, InputStream inputStream) throws JSONException {
-            return deserializeJson(inputStream, BuildList.class).build;
+        public BuildList parse(BuildType.BuildTypeParams parameter, InputStream inputStream) throws JSONException {
+            return deserializeJson(inputStream, BuildList.class);
         }
 
     };
 
-    public final List<Build> getBuilds(boolean fromCache, BuildType buildType) throws CacheException {
+    public final BuildList getBuilds(boolean fromCache, BuildType buildType) throws CacheException {
+        return getBuilds(fromCache, buildType, -1);
+    }
+
+    public final BuildList getBuilds(boolean fromCache, BuildType buildType, int count) throws CacheException {
         if (log.isInfoEnabled()) {
-            log.info("Retrieve the list of projects");
+            log.info("Retrieve the list of build from buildTypeId:" + buildType.id + " and count:" + count);
         }
-        return buildsStreamParser.backed.getRetentionValue(fromCache, Constants.CACHING_PERIOD_IN_MILLESCONDS, null, buildType);
+        return buildsStreamParser.backed.getRetentionValue(fromCache, Constants.CACHING_PERIOD_IN_MILLESCONDS, null, new BuildType.BuildTypeParams(buildType, count));
     }
 
 }

@@ -1,6 +1,13 @@
 package com.erioxyde.android.teamcity;
 
+import android.view.MenuItem;
 import com.erioxyde.android.teamcity.fragments.ProjectBuildsFragment;
+import com.smartnsoft.droid4me.framework.Commands;
+import com.smartnsoft.droid4me.menu.StaticMenuCommand;
+import com.smartnsoft.droid4me.support.v4.menu.ActionMenuCommand;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The starting screen of the application.
@@ -25,23 +32,5 @@ public final class ProjectBuildsActivity extends TeamCityFragmentActivity
 	public void onSynchronizeDisplayObjects() {
 
 	}
-
-//    @Override
-//    public List<StaticMenuCommand> getMenuCommands() {
-//        final List<StaticMenuCommand> commands = super.getMenuCommands();
-//        commands.add(new StaticMenuCommand(R.string.Projects_menu_settings, '2', 's', android.R.drawable.ic_menu_preferences, new Commands.StaticEnabledExecutable() {
-//            @Override
-//            public void run() {
-//                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-//            }
-//        }));
-//        commands.add(new StaticMenuCommand(R.string.Projects_menu_about, '3', 'a', android.R.drawable.ic_menu_info_details, new Commands.StaticEnabledExecutable() {
-//            @Override
-//            public void run() {
-//                startActivity(new Intent(getApplicationContext(), AboutActivity.class));
-//            }
-//        }));
-//        return commands;
-//    }
 
 }

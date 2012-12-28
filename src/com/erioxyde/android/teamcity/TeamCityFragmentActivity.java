@@ -4,7 +4,9 @@ package com.erioxyde.android.teamcity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.actionbarsherlock.view.MenuItem;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.Window;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityCredentials;
 import com.erioxyde.android.teamcity.ws.TeamCityAndroidServices.TeamCityInformations;
@@ -28,12 +30,17 @@ public abstract class TeamCityFragmentActivity extends SmartFragmentActivity<Voi
 		return getPreferences().getString(SettingsActivity.SERVER_URL, null);
 	}
 
-	public void onRetrieveBusinessObjects() throws BusinessObjectUnavailableException {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setProgressBarIndeterminateVisibility(true);
+        super.onCreate(savedInstanceState);
+    }
+
+    public void onRetrieveBusinessObjects() throws BusinessObjectUnavailableException {
 		TeamCityAndroidServices.getInstance().setTeamCityInformations(this);
 	}
 
-	
-	
     @Override
     public List<StaticMenuCommand> getMenuCommands() {
         final List<StaticMenuCommand> commands = new ArrayList<StaticMenuCommand>();

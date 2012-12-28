@@ -20,18 +20,15 @@
             <groupId>com.google.android</groupId>
             <artifactId>support-v4</artifactId>
             <version>r6</version>
-            <scope>provided</scope>
+            <!-- An error occurs with scope 'provided' used for eclipse warnings... -->
+            <!--<scope>provided</scope>-->
         </dependency>
         <dependency>
+            <!-- Install droid4me in maven with command : -->
+            <!-- mvn install:install-file -Dfile=com.smartnsoft.droid4me.jar -DgroupId=com.smartnsoft -DartifactId=droid4me -Dversion=1.0 -Dpackaging=jar -->
             <groupId>com.smartnsoft</groupId>
             <artifactId>droid4me</artifactId>
             <version>1.0</version>
-            <!--
-            http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html
-            cmd : mvn install:install-file -Dfile=libs/com.smartnsoft.droid4me.jar -DgroupId=com.smartnsoft -DartifactId=droid4me -Dversion=1.0 -Dpackaging=jar
-            -->
-            <!-- <scope>system</scope> -->
-            <!-- <systemPath>${project.basedir}/libs/com.smartnsoft.droid4me.jar</systemPath> -->
         </dependency>
         <dependency>
 	        <groupId>com.actionbarsherlock</groupId>
@@ -44,11 +41,6 @@
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.11</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>com.sun.jersey</groupId>-->
-        <!--<artifactId>jersey-client</artifactId>-->
-        <!--<version>1.9</version>-->
-        <!--</dependency>-->
     </dependencies>
 
     <build>

@@ -123,8 +123,10 @@ public final class ProjectsFragment extends SmartListViewFragment<Void, ListView
     @Override
     public void onResume() {
         super.onResume();
-
-        refreshBusinessObjectsAndDisplay();
+        if (isRefreshingBusinessObjectsAndDisplay() == false)
+        {
+            refreshBusinessObjectsAndDisplay();
+        }
     }
 
     @Override

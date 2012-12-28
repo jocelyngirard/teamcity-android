@@ -84,12 +84,13 @@ public final class SettingsActivity extends SmartPreferenceActivity<Void> implem
         super.onRetrieveBusinessObjects();
         try {
             projects = TeamCityAndroidServices.getInstance().getProjects(true);
+            hiddenProjects.setEntries(projects.getProjectsNames());
+            hiddenProjects.setEntryValues(projects.getProjectsIds());
+            hiddenProjects.setEnabled(true);
         } catch (CacheException exception) {
-            throw new BusinessObjectUnavailableException(exception);
+            //throw new BusinessObjectUnavailableException(exception);
         }
-        hiddenProjects.setEntries(projects.getProjectsNames());
-        hiddenProjects.setEntryValues(projects.getProjectsIds());
-        hiddenProjects.setEnabled(true);
+
     }
 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
